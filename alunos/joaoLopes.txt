@@ -1,0 +1,3 @@
+Nome:João Lopes
+Linguagem preferida: Python
+Hobby: Surf
