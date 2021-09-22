@@ -1,0 +1,3 @@
+Nome: Suelen Lima
+Linguagem preferida: JavaScript
+Hobby: Netflix
