@@ -1,0 +1,3 @@
+Nome: Jean Carlo Capote Santos
+Linguagem preferida: Groovy
+Hobby: CS
