@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <title>Calculadora</title>
+
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+    *{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+
+#tela button, input
+{
+  font-family: 'Poppins';
+  font-size: 20px;
+}
+
+input{
+  width: 100%;
+  border-radius: 7px;
+  border: none;
+  padding: 4px 10px;
+}
+
+#tela 
+{
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient( 227deg, #3e4fab9c, #c178369c);
+  width: 350px;
+  margin: auto;
+  margin-top: 20vh;
+  padding: 20px;
+  box-shadow: 3px 4px 20px 12px #0000005c;
+  border-radius: 12px;
+  animation: girarTelaFoda 40s infinite cubic-bezier(0.96, 0.01, 0.38, 0.97);
+}
+
+#botoes
+{
+  display: grid;
+  grid-template-columns:  repeat(4, 1fr);
+  margin-top: 30px;
+
+}
+
+#botoes button
+{
+  height: 45px;
+  border-radius: 5px;
+  width: 60px;
+  margin: 5px;
+  border: none;
+  box-shadow: inset -4px -2px 8px 4px #0000005c;
+  background: none;
+  color: white;
+}
+
+#botoes button:hover{
+  box-shadow: -4px -2px 8px 4px #0000005c;
+  transform: scale(1.05);
+  transition: 0.5s;
+}
+
+#botoes button:active{
+  box-shadow: inset -4px -2px 8px 4px #0000005c;
+  transform: scale(0.9);
+  transition: 0.5s;
+}
+
+@keyframes girarTelaFoda {
+  from{
+    transform: rotate(0deg);
+  }
+  to{
+    transform: rotate(360deg);
+   }
+}
+    </style>
+
+  </head>
+  <body>
+    <header>
+        <h1>
+            Página do Jean
+        </h1>
+    </header>
+    <section>
+      <h2>Descrição</h2>
+      <p>Cara da Calculadora</p>
+      <a href="../index.html">Voltar</a>
+    </section>
+    <div id="tela">
+      <input readonly type="text" id="telinha" placeholder="0" />
+      <div id="botoes"></div>
+    </div>
+    <footer>
+        Direitos reservados
+    </footer>
+  </body>
+  <script>
+    //----------------------------------------CRIAÇÃO DDOS BOTÕES-------------------------------------------------------
+
+// Atribuindo valores dos Botões (nome e a ação('ONCLICK')) em Teclado
+
+const teclado = [
+  { nome: 1, action: 'adicionarValor(1)' },
+  { nome: 2, action: 'adicionarValor(2)' },
+  { nome: 3, action: 'adicionarValor(3)' },
+  { nome: 4, action: 'adicionarValor(4)' },
+  { nome: 5, action: 'adicionarValor(5)' },
+  { nome: 6, action: 'adicionarValor(6)' },
+  { nome: 7, action: 'adicionarValor(7)' },
+  { nome: 8, action: 'adicionarValor(8)' },
+  { nome: 9, action: 'adicionarValor(9)' },
+  { nome: 0, action: 'adicionarValor(0)' },
+  { nome: '➕', action: 'adicionarValorAtividade(`+`)' },
+  { nome: '➖', action: 'adicionarValorAtividade(`-`)' },
+  { nome: '✖', action: 'adicionarValorAtividade(`*`)' },
+  { nome: ',', action: 'adicionarValorAtividade(`.`)' },
+  { nome: '%', action: ' adicionarValorAtividade(`/100*`)' },
+  { nome: '➗', action: 'adicionarValorAtividade(`/`)' },
+  { nome: '⌫', action: 'apagarValor()' },
+  { nome: 'C', action: 'limparTela()' },
+  { nome: '=', action: 'calcularTotal()' },
+]
+
+
+//Evento para chamada iniciar o script após o carregamento da pagina para evitar erro em que as divs não existem
+//>Criação dos botões utilizando os objetos de Teclado
+
+addEventListener('load', () => {
+  const botoes = document.getElementById('botoes')
+  teclado.map((tecla) => {
+    botoes.innerHTML += `<button onclick="${tecla.action}">${tecla.nome}</button>`
+  })
+})
+
+
+//--------------------------------CALCULOS-------------------------------------------------------------------
+
+//Função para adicionar Numeros no input (os NUMEROS são adicionados como STRING)
+function adicionarValor(valor) {
+  const resposta = document.getElementById('telinha')
+  resposta.value += valor
+  atividade = false
+  cache += valor
+}
+
+//Função para apagar o ultimo digito do input
+ function apagarValor() {
+  const resposta = document.getElementById('telinha')
+  resposta.value = resposta.value.substr(0, resposta.value.length - 1)
+  cache = cache.substr(0, cache.length - 1)
+}
+
+//Função para adicinar numeros de atividade, e verificação re repetição dos mesmos (+++,---,*** etc)
+ function adicionarValorAtividade(valor) {
+  cache = ''
+  if (!atividade) {
+    const resposta = document.getElementById('telinha')
+    resposta.value += valor
+    atividade = true
+    return
+  }
+  const resposta = document.getElementById('telinha')
+  resposta.value = resposta.value.substr(0, resposta.value.length - 1)
+  resposta.value += valor
+  
+}
+
+//Função para limpar o input inteiro
+const limparTela = () => {
+  document.getElementById('telinha').value = ""
+  cache = '0'
+}
+
+//Função para calcular o valor final em STRING utilizando EVAL()
+const calcularTotal = () => {
+  const tela = document.getElementById('telinha')
+  const resultado = eval(tela.value)
+  if(!resultado){
+    tela.value = 'ERROR'
+  }else{
+    tela.value = resultado
+  }
+  atividade = false
+  cache = ''
+}
+
+//Variavel para armazenar o ultimo valor
+let cache = ''
+
+//Variavel para verificação de tecla de função para evitar multiplas teclas de função seguidas (++++ ou ---- etc.)
+let atividade = false
+
+//----------------------------------ACINAMENTO PELAS TECLAS-------------------------------------------------------
+
+//atribuição das funções acionadas pelas teclas do computador ('KEYDOWN')
+
+const teclasAceitas = {
+  '1': function () { adicionarValor(1) },
+  '2': () => { adicionarValor(2) },
+  '3'() { adicionarValor(3) },
+  '4'() { adicionarValor(4) },
+  '5'() { adicionarValor(5) },
+  '6'() { adicionarValor(6) },
+  '7'() { adicionarValor(7) },
+  '8'() { adicionarValor(8) },
+  '9'() { adicionarValor(9) },
+  '0'() { adicionarValor(0) },
+  '/'() { adicionarValorAtividade('/') },
+  '*'() { adicionarValorAtividade('*') },
+  '-'() { adicionarValorAtividade('-') },
+  '+'() { adicionarValorAtividade('+') },
+  ','() { adicionarValorAtividade('.') },
+  '.'() { adicionarValorAtividade('.') },
+  'Enter'() { calcularTotal() },
+  'Backspace'() { apagarValor() },
+}
+
+//Criando um evento para acionar a função TeclasAceitas 
+addEventListener('keydown', event => {
+  const tecla = event.key
+  console.log(tecla)
+  if (teclasAceitas[tecla]) teclasAceitas[tecla]()
+})
+  </script>
+</html>
